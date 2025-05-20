@@ -332,6 +332,41 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		_.extend(piCurrent, _.defaults(options, iatObj));
 		_.extend(API.script.settings, options.settings);
 
+// Load html2canvas dynamically
+(function loadScreenshotLib() {
+    if (typeof html2canvas === "undefined") {
+        const script = document.createElement("script");
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+        script.onload = () => console.log('html2canvas loaded');
+        document.head.appendChild(script);
+    }
+})();
+
+// Add screenshot capture on debriefing screen
+API.addSettings('hooks', {
+    onEnd: function() {
+        setTimeout(() => {
+            if (typeof html2canvas !== 'undefined') {
+                html2canvas(document.body).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    console.log('Screenshot captured');
+
+                    // Optional: send to server or save
+                    // fetch('https://yourserver.com/upload', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ screenshot: imgData })
+                    // });
+
+                }).catch(err => console.error('Screenshot error:', err));
+            } else {
+                console.warn('html2canvas not available');
+            }
+        }, 1000); // Delay to ensure the screen has fully loaded
+    }
+});
+
+		
         /**
         **** For Qualtrics
         */
