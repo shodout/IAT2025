@@ -1384,6 +1384,41 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		}
 		//Set messages to the scorer.
 		scorer.addSettings('message',scoreMessageObject);
+		// Screenshot capture AFTER feedback is shown
+if (piCurrent.showDebriefing) {
+    const originalPostTrial = API.addSettings('onEnd', function() {
+        const waitForDebrief = setInterval(() => {
+            const resultText = document.querySelector('.debriefing-text');
+            if (resultText) {
+                clearInterval(waitForDebrief);
+
+                // Load html2canvas only if needed
+                if (typeof html2canvas === 'undefined') {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                    script.onload = captureScreenshot;
+                    document.head.appendChild(script);
+                } else {
+                    captureScreenshot();
+                }
+
+                function captureScreenshot() {
+                    setTimeout(() => {
+                        html2canvas(document.body).then(canvas => {
+                            const imageData = canvas.toDataURL('image/png');
+                            console.log('✅ Screenshot captured:', imageData);
+
+                            // Optionally store or send imageData somewhere
+                        }).catch(err => {
+                            console.error('❌ Screenshot error:', err);
+                        });
+                    }, 1000); // wait a bit more to let text fully render
+                }
+            }
+        }, 300);
+    });
+}
+
 		return API.script;
 	}
 
