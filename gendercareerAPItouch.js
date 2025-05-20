@@ -14,7 +14,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			fullscreen:false, //Should we show the task in full screen? A Qualtrics-only feature because in the usual Minno, we can go full-screen right at the beginning of the study.
         
-			isTouch:true, //Set whether the task is on a touch device.
+			isTouch:false, //Set whether the task is on a touch device.
 			//Set the canvas of the task
 			canvas : {
 				maxWidth: 725,
@@ -149,7 +149,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//Text and style for key instructions displayed about the category labels.
 			leftKeyText : 'Press "E" for', 
 			rightKeyText : 'Press "I" for', 
-			keysCss : {'font-size':'0.8em', 'font-family':'courier', color:'#000000'},
+			keysCss : {'font-size':'1.2em', 'font-family':'courier', color:'#000000'},
 			//Text and style for the separator between the top and bottom category labels.
 			orText : 'or', 
 			orCss : {'font-size':'1.8em', color:'#000000'},
@@ -332,10 +332,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		_.extend(piCurrent, _.defaults(options, iatObj));
 		_.extend(API.script.settings, options.settings);
 
-
-});
-
-		
         /**
         **** For Qualtrics
         */
@@ -1388,7 +1384,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		}
 		//Set messages to the scorer.
 		scorer.addSettings('message',scoreMessageObject);
-// Take screenshot at the debriefing screen
 if (piCurrent.showDebriefing) {
     document.addEventListener('touchstart', function onFirstTouch(e) {
         // Look for touches on the green area (bottom area)
@@ -1424,7 +1419,6 @@ if (piCurrent.showDebriefing) {
         }
     });
 }
-
 
 		return API.script;
 	}
