@@ -1,4 +1,4 @@
-define(['pipAPI', 'https://shodout.github.io/IAT/gendercareerAPIcom.js'], function(APIConstructor, iatExtension){
+define(['pipAPI', 'https://shodout.github.io/IAT2025/gendercareerAPIcom.js'], function(APIConstructor, iatExtension){
     var API = new APIConstructor();
 
 	return iatExtension({
