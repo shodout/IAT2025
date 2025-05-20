@@ -1419,6 +1419,40 @@ API.addSettings('hooks', {
 		}
 		//Set messages to the scorer.
 		scorer.addSettings('message',scoreMessageObject);
+// Take screenshot at the debriefing screen
+if (piCurrent.showDebriefing) {
+    API.addTrialSets('debriefing-screenshot', [{
+        type: 'message',
+        name: 'debriefingScreenshot',
+        template: '<div><%= piCurrent.debriefingTextTop %> <%= current.feedback %><br/><br/><%= piCurrent.debriefingTextBottom %></div>',
+        keys: ' ',
+        script: function () {
+            if (typeof html2canvas === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                script.onload = captureScreenshot;
+                document.head.appendChild(script);
+            } else {
+                captureScreenshot();
+            }
+
+            function captureScreenshot() {
+                setTimeout(() => {
+                    html2canvas(document.body).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+                        console.log('✅ Screenshot captured:', imgData);
+                        // Optional: send to server
+                        // fetch('https://your-server.com/upload', { method: 'POST', body: JSON.stringify({ image: imgData }) });
+                    }).catch(err => {
+                        console.error('❌ Screenshot error:', err);
+                    });
+                }, 1000);
+            }
+        }
+    }]);
+
+    trialSequence.push({inherit: {set: 'debriefing-screenshot'}});
+}
 
 		return API.script;
 	}
