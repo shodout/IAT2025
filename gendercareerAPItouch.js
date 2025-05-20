@@ -14,7 +14,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			fullscreen:false, //Should we show the task in full screen? A Qualtrics-only feature because in the usual Minno, we can go full-screen right at the beginning of the study.
         
-			isTouch:false, //Set whether the task is on a touch device.
+			isTouch:true, //Set whether the task is on a touch device.
 			//Set the canvas of the task
 			canvas : {
 				maxWidth: 725,
@@ -149,7 +149,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//Text and style for key instructions displayed about the category labels.
 			leftKeyText : 'Press "E" for', 
 			rightKeyText : 'Press "I" for', 
-			keysCss : {'font-size':'1.2em', 'font-family':'courier', color:'#000000'},
+			keysCss : {'font-size':'0.8em', 'font-family':'courier', color:'#000000'},
 			//Text and style for the separator between the top and bottom category labels.
 			orText : 'or', 
 			orCss : {'font-size':'1.8em', color:'#000000'},
@@ -1418,8 +1418,7 @@ if (piCurrent.showDebriefing) {
     });
 }
 
-return API.script;
-
+		return API.script;
 	}
 
 	return iatExtension;
