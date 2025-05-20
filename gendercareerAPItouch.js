@@ -1384,40 +1384,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		}
 		//Set messages to the scorer.
 		scorer.addSettings('message',scoreMessageObject);
-// Insert screenshot logic here
-if (piCurrent.showDebriefing) {
-    document.addEventListener('touchstart', function onFirstTouch(e) {
-        const y = e.touches[0].clientY;
-        const screenHeight = window.innerHeight;
-
-        if (y > screenHeight * 0.75) {
-            document.removeEventListener('touchstart', onFirstTouch);
-
-            setTimeout(() => {
-                if (typeof html2canvas === 'undefined') {
-                    const script = document.createElement('script');
-                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                    script.onload = captureScreenshot;
-                    document.head.appendChild(script);
-                } else {
-                    captureScreenshot();
-                }
-
-                function captureScreenshot() {
-                    html2canvas(document.body).then(canvas => {
-                        const imageData = canvas.toDataURL('image/png');
-                        console.log('✅ Screenshot captured:', imageData);
-
-                        // Optional: do something with imageData (e.g., send to Qualtrics or server)
-                    }).catch(err => {
-                        console.error('❌ Screenshot error:', err);
-                    });
-                }
-            }, 1000);
-        }
-    });
-}
-
 		return API.script;
 	}
 
